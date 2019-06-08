@@ -65,75 +65,11 @@ interface ISupport
     public function getHeal();
 }
 
-class Drood implements ISupport
-{
-    private $_heal;
-
-    public function healHero($hero)
-    {
-        if ($hero->getHp() === 100)
-            return false;
-        else if ($this->_heal === 0)
-            return false;
-        else if (($hero->getHp() + $this->_heal) > 100) {
-            $hero->setHp($hero->getHp() + (100 - $hero->getHp()));
-            return true;
-        } else {
-            $hero->setHp($hero->getHp() + $this->_heal);
-            return true;
-        }
-    }
-
-    public function setHeal(int $value)
-    {
-        if (is_numeric($value) and !($value < 0))
-            $this->_heal = $value;
-        return $this;
-    }
-
-    public function getHeal()
-    {
-        return intval($this->_heal);
-    }
-}
-
 interface IDPS
 {
     public function hitHero($hero);
     public function setDMG(int $value);
     public function getDMG();
-}
-
-class Rogue implements IDPS
-{
-    private $_dmg;
-
-    public function hitHero($hero)
-    {
-        if ($hero->getHp() === 0)
-            return false;
-        else if ($this->_dmg === 0)
-            return false;
-        else if (($hero->getHp() - $this->_dmg) < 0) {
-            $hero->setHp(0);
-            return true;
-        } else {
-            $hero->setHp($hero->getHp() - $this->_dmg);
-            return true;
-        }
-    }
-
-    public function setDMG(int $value)
-    {
-        if (is_numeric($value) and !($value < 0))
-            $this->_dmg = $value;
-        return $this;
-    }
-
-    public function getDMG()
-    {
-        return intval($this->_dmg);
-    }
 }
 
 // ------------- EX 03 --------------
@@ -308,22 +244,6 @@ class Receptarier extends AHero implements IDPS, ISupport
     }
 }
 
-$warrior = new Warrior("toto");
-echo $warrior . "\n";
-echo $warrior->getDMG() . "\n";
-$warrior->whoAmI();
-$receptarier = new Receptarier("zero");
-echo $receptarier . "\n";
-echo $receptarier->getDMG() . "\n";
-echo $receptarier->getHeal() . "\n";
-$receptarier->whoAmI();
-$priest = new priest("meow");
-echo $priest . "\n";
-echo $priest->getHeal() . "\n";
-$priest->whoAmI();
-$receptarier->hitHero($warrior);
-echo $warrior . "\n";
-$receptarier->healHero($warrior);
-echo $warrior . "\n";
+// ------------- EX 04 --------------
 
 ?>
