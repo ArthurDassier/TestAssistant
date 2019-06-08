@@ -246,4 +246,37 @@ class Receptarier extends AHero implements IDPS, ISupport
 
 // ------------- EX 04 --------------
 
+class ParseFile
+{
+    private static $_instance = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (is_null(self::$_instance))
+            self::$_instance = new ParseFile();
+        return self::$_instance;
+    }
+
+    public function getContentFile($path)
+    {
+        $content = file_get_contents($path);
+
+        if ($content === FALSE)
+            throw new Exception("Error occured.");
+        echo $content;
+    }
+
+    public function getHeroesFromFile($path)
+    {
+        $content = file_get_contents($path);
+
+        if ($content === FALSE)
+            throw new Exception("Error occured 1.");
+    }
+}
+
 ?>
