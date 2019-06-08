@@ -14,7 +14,7 @@ abstract class AHero
 
     public function __toString()
     {
-        return "I'm a hero, my name is ".$this->name." and I've got ".$this->hp." hp";
+        return "I'm a hero, my name is [".$this->name."] and I've got [".$this->hp."] hp";
     }
 
     public function setName($value)
@@ -75,11 +75,11 @@ class Drood implements ISupport
             return false;
         else if ($this->_heal === 0)
             return false;
-        else if (($hero->getHp() + $_heal) > 100) {
+        else if (($hero->getHp() + $this->_heal) > 100) {
             $hero->setHp($hero->getHp() + (100 - $hero->getHp()));
             return true;
         } else {
-            $hero->setHp($hero->getHp() + $_heal);
+            $hero->setHp($hero->getHp() + $this->_heal);
             return true;
         }
     }
@@ -114,11 +114,11 @@ class Rogue implements IDPS
             return false;
         else if ($this->_dmg === 0)
             return false;
-        else if (($hero->getHp() - $_dmg) < 0) {
+        else if (($hero->getHp() - $this->_dmg) < 0) {
             $hero->setHp(0);
             return true;
         } else {
-            $hero->setHp($hero->getHp() - $_dmg);
+            $hero->setHp($hero->getHp() - $this->_dmg);
             return true;
         }
     }
@@ -156,11 +156,11 @@ class Warrior extends AHero implements IDPS
             return false;
         else if ($this->_dmg === 0)
             return false;
-        else if (($hero->getHp() - $_dmg) < 0) {
+        else if (($hero->getHp() - $this->_dmg) < 0) {
             $hero->setHp(0);
             return true;
         } else {
-            $hero->setHp($hero->getHp() - $_dmg);
+            $hero->setHp($hero->getHp() - $this->_dmg);
             return true;
         }
     }
@@ -179,12 +179,12 @@ class Warrior extends AHero implements IDPS
 
     public function __toString()
     {
-        return "I'm a warrior hero and my name is ".$this->name." and I've got ".$this->hp." hp";
+        return "I'm a warrior hero and my name is [".$this->name."] and I've got [".$this->hp."] hp";
     }
 
     public function whoAmI()
     {
-        return "I’m a warrior and I love to fight!\n";
+        echo "I’m a warrior and I love to fight!\n";
     }
 }
 
@@ -206,11 +206,11 @@ class Priest extends AHero implements ISupport
             return false;
         else if ($this->_heal === 0)
             return false;
-        else if (($hero->getHp() + $_heal) > 100) {
-            $hero->setHp($hero->getHp() + (100 - $hero->getHp()));
+        else if (($hero->getHp() + $this->_heal) > $hero::MAX_HP) {
+            $hero->setHp($hero->getHp() + ($hero::MAX_HP - $hero->getHp()));
             return true;
         } else {
-            $hero->setHp($hero->getHp() + $_heal);
+            $hero->setHp($hero->getHp() + $this->_heal);
             return true;
         }
     }
@@ -227,14 +227,9 @@ class Priest extends AHero implements ISupport
         return intval($this->_heal);
     }
 
-    public function __toString()
-    {
-        return "I'm a priest hero and my name is ".$this->name." and I've got ".$this->hp." hp";
-    }
-
     public function whoAmI()
     {
-        return "I'm a priest and I want to heal everyone!\n";
+        echo "I'm a priest and I want to heal everyone!\n";
     }
 }
 
@@ -259,11 +254,11 @@ class Receptarier extends AHero implements IDPS, ISupport
             return false;
         else if ($this->_dmg === 0)
             return false;
-        else if (($hero->getHp() - $_dmg) < 0) {
+        else if (($hero->getHp() - $this->_dmg) < 0) {
             $hero->setHp(0);
             return true;
         } else {
-            $hero->setHp($hero->getHp() - $_dmg);
+            $hero->setHp($hero->getHp() - $this->_dmg);
             return true;
         }
     }
@@ -286,11 +281,11 @@ class Receptarier extends AHero implements IDPS, ISupport
             return false;
         else if ($this->_heal === 0)
             return false;
-        else if (($hero->getHp() + $_heal) > 100) {
-            $hero->setHp($hero->getHp() + (100 - $hero->getHp()));
+        else if (($hero->getHp() + $this->_heal) > $hero::MAX_HP) {
+            $hero->setHp($hero->getHp() + ($hero::MAX_HP - $hero->getHp()));
             return true;
         } else {
-            $hero->setHp($hero->getHp() + $_heal);
+            $hero->setHp($hero->getHp() + $this->_heal);
             return true;
         }
     }
@@ -307,15 +302,28 @@ class Receptarier extends AHero implements IDPS, ISupport
         return intval($this->_heal);
     }
 
-    public function __toString()
-    {
-        return "I'm a receptarier hero and my name is ".$this->name." and I've got ".$this->hp." hp";
-    }
-
     public function whoAmI()
     {
-        return "I'm a receptarier and I want to save everyone behind me!\n";
+        echo "I'm a receptarier and I want to save everyone behind me!\n";
     }
 }
+
+$warrior = new Warrior("toto");
+echo $warrior . "\n";
+echo $warrior->getDMG() . "\n";
+$warrior->whoAmI();
+$receptarier = new Receptarier("zero");
+echo $receptarier . "\n";
+echo $receptarier->getDMG() . "\n";
+echo $receptarier->getHeal() . "\n";
+$receptarier->whoAmI();
+$priest = new priest("meow");
+echo $priest . "\n";
+echo $priest->getHeal() . "\n";
+$priest->whoAmI();
+$receptarier->hitHero($warrior);
+echo $warrior . "\n";
+$receptarier->healHero($warrior);
+echo $warrior . "\n";
 
 ?>
