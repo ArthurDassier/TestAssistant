@@ -74,7 +74,7 @@ interface IDPS
 
 // ------------- EX 03 --------------
 
-class Warrior extends AHero implements IDPS
+final class Warrior extends AHero implements IDPS
 {
     private $_dmg;
     const MAX_HP = 200;
@@ -124,7 +124,7 @@ class Warrior extends AHero implements IDPS
     }
 }
 
-class Priest extends AHero implements ISupport
+final class Priest extends AHero implements ISupport
 {
     private $_heal;
     const MAX_HP = 150;
@@ -169,7 +169,7 @@ class Priest extends AHero implements ISupport
     }
 }
 
-class Receptarier extends AHero implements IDPS, ISupport
+final class Receptarier extends AHero implements IDPS, ISupport
 {
     private $_dmg;
     private $_heal;
