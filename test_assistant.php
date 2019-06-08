@@ -61,7 +61,7 @@ class Toto extends AHero
 interface ISupport
 {
     public function healHero($hero);
-    public function setHeal($value);
+    public function setHeal(int $value);
     public function getHeal();
 }
 
@@ -100,7 +100,7 @@ class Drood implements ISupport
 interface IDPS
 {
     public function hitHero($hero);
-    public function setDMG($value);
+    public function setDMG(int $value);
     public function getDMG();
 }
 
@@ -229,11 +229,92 @@ class Priest extends AHero implements ISupport
 
     public function __toString()
     {
+        return "I'm a priest hero and my name is ".$this->name." and I've got ".$this->hp." hp";
     }
 
     public function whoAmI()
     {
         return "I'm a priest and I want to heal everyone!\n";
+    }
+}
+
+class Receptarier extends AHero implements IDPS, ISupport
+{
+    private $_dmg;
+    private $_heal;
+    const MAX_HP = 230;
+    const BASIC_DMG = 18;
+    const BASIC_HEAL = 17;
+
+    function __construct($string)
+    {
+        parent::__construct($string, self::MAX_HP);
+        $this->_dmg = self::BASIC_DMG;
+        $this->_heal = self::BASIC_HEAL;
+    }
+
+    public function hitHero($hero)
+    {
+        if ($hero->getHp() === 0)
+            return false;
+        else if ($this->_dmg === 0)
+            return false;
+        else if (($hero->getHp() - $_dmg) < 0) {
+            $hero->setHp(0);
+            return true;
+        } else {
+            $hero->setHp($hero->getHp() - $_dmg);
+            return true;
+        }
+    }
+
+    public function setDMG(int $hero)
+    {
+        if (is_numeric($value) and !($value < self::BASIC_DMG))
+            $this->_dmg = $value;
+        return $this;
+    }
+
+    public function getDMG()
+    {
+        return intval($this->_dmg);
+    }
+
+    public function healHero($hero)
+    {
+        if ($hero->getHp() === $hero::MAX_HP)
+            return false;
+        else if ($this->_heal === 0)
+            return false;
+        else if (($hero->getHp() + $_heal) > 100) {
+            $hero->setHp($hero->getHp() + (100 - $hero->getHp()));
+            return true;
+        } else {
+            $hero->setHp($hero->getHp() + $_heal);
+            return true;
+        }
+    }
+
+    public function setHeal(int $value)
+    {
+        if (is_numeric($value) and !($value < self::BASIC_HEAL))
+            $this->_heal = $value;
+        return $this;
+    }
+
+    public function getHeal()
+    {
+        return intval($this->_heal);
+    }
+
+    public function __toString()
+    {
+        return "I'm a receptarier hero and my name is ".$this->name." and I've got ".$this->hp." hp";
+    }
+
+    public function whoAmI()
+    {
+        return "I'm a receptarier and I want to save everyone behind me!\n";
     }
 }
 
