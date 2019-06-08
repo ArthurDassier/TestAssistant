@@ -1,4 +1,6 @@
 <?php
+// ------------- EX 01 --------------
+
 abstract class AHero
 {
     protected $name;
@@ -54,6 +56,8 @@ class Toto extends AHero
     }
 }
 
+// ------------- EX 02 --------------
+
 interface ISupport
 {
     public function healHero($hero);
@@ -61,7 +65,7 @@ interface ISupport
     public function getHeal();
 }
 
-class Template implements ISupport
+class Drood implements ISupport
 {
     private $_heal;
 
@@ -71,7 +75,7 @@ class Template implements ISupport
             return false;
         else if ($this->_heal === 0)
             return false;
-        else if ($hero->getHp() + $_heal > 100) {
+        else if (($hero->getHp() + $_heal) > 100) {
             $hero->setHp($hero->getHp() + (100 - $hero->getHp()));
             return true;
         } else {
@@ -90,6 +94,45 @@ class Template implements ISupport
     public function getHeal()
     {
         return $this->_heal;
+    }
+}
+
+interface IDPS
+{
+    public function hitHero($hero);
+    public function setHeal($value);
+    public function getHeal();
+}
+
+class Rogue implements IDPS
+{
+    private $_dmg;
+
+    public function hitHero($hero)
+    {
+        if ($hero->getHp() === 0)
+            return false;
+        else if ($this->_dmg === 0)
+            return false;
+        else if (($hero->getHp() - $_dmg) < 0) {
+            $hero->setHp(0);
+            return true;
+        } else {
+            $hero->setHp($hero->getHp() - $_dmg);
+            return true;
+        }
+    }
+
+    public function setDMG($hero)
+    {
+        if (is_numeric($value) and !($value < 0))
+            $this->_dmg = $value;
+        return $this;
+    }
+
+    public function getDMG()
+    {
+        return $this->_dmg;
     }
 }
 ?>
