@@ -311,6 +311,39 @@ class ParseFile
             throw new Exception("Error occured 1.");
         return $result;
     }
+
+    public function getHeroesFromJSON($path)
+    {
+        $content = file_get_contents($path);
+        $result = array();
+
+        if ($content === FALSE)
+            throw new Exception("Error occured 1.");
+        $data = json_decode($content);
+        foreach ($data as $hero) {
+            try {
+                $obj = new $hero->class($hero->name);
+            } catch (Exception $e) {
+                throw new Exception("Error occured 3.");
+            }
+            if (array_key_exists('d', $hero)) {
+                try {
+                    $obj->setDMG(intval($hero->d));
+                } catch (Exception $e) {
+                    throw new Exception("Error occured 4.");
+                }
+            }
+            if (array_key_exists('h', $hero)) {
+                try {
+                    $obj->setHeal(intval($hero->h));
+                } catch (Exception $e) {
+                    throw new Exception("Error occured 4.");
+                }
+            }
+            array_push($result, $obj);
+        }
+        return $result;
+    }
 }
 
 // ------------- BONUS --------------
