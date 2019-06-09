@@ -312,6 +312,7 @@ class ParseFile
         return $result;
     }
 
+// ------------- BONUS --------------
     public function getHeroesFromJSON($path)
     {
         $content = file_get_contents($path);
