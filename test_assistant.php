@@ -285,7 +285,7 @@ class ParseFile
 
                 try {
                     $obj = new $classname($array[1]);
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     throw new Exception("Error occured 3.");
                 }
                 for ($i = 2; $i < sizeof($array); $i++) {
@@ -298,7 +298,7 @@ class ParseFile
                             $obj->setHeal(intval($d[1]));
                         else
                             throw new Exception("Error occured 4.");
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         throw new Exception("Error occured 4.");
                     }
                 }
@@ -324,20 +324,20 @@ class ParseFile
         foreach ($data as $hero) {
             try {
                 $obj = new $hero->class($hero->name);
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 throw new Exception("Error occured 3.");
             }
             if (array_key_exists('d', $hero)) {
                 try {
                     $obj->setDMG(intval($hero->d));
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     throw new Exception("Error occured 4.");
                 }
             }
             if (array_key_exists('h', $hero)) {
                 try {
                     $obj->setHeal(intval($hero->h));
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     throw new Exception("Error occured 4.");
                 }
             }
@@ -468,5 +468,38 @@ final class Viking extends AHero implements IDPS
         echo "I’m Bernard le Viking and I SMASH!\n";
     }
 }
+
+$warrior = new Warrior("toto");
+echo $warrior . "\n";
+echo $warrior->getDMG() . "\n";
+$warrior->whoAmI();
+$receptarier = new Receptarier("zero");
+echo $receptarier . "\n";
+echo $receptarier->getDMG() . "\n";
+echo $receptarier->getHeal() . "\n";
+$receptarier->whoAmI();
+$priest = new priest("meow");
+echo $priest . "\n";
+echo $priest->getHeal() . "\n";
+$priest->whoAmI();
+$receptarier->hitHero($warrior);
+echo $warrior . "\n";
+$receptarier->healHero($warrior);
+echo $warrior . "\n";
+
+////////////////////////////////////////////////////
+
+$truc = ParseFile::getInstance();
+
+echo ($truc->getHeroesFromFile("text.txt"))[0];
+echo "\n";
+echo ($truc->getHeroesFromFile("text.txt"))[1];
+echo "\n";
+echo ($truc->getHeroesFromFile("text.txt"))[1]->getHeal();
+echo "\n";
+echo ($truc->getHeroesFromFile("text.txt"))[2];
+echo "\n";
+echo ($truc->getHeroesFromJSON("bonus.json")[0]);
+echo "\n";
 
 ?>
