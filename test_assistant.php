@@ -279,7 +279,7 @@ class ParseFile
             while (($buffer = fgets($handle)) !== false) {
                 $array = explode(" ", $buffer);
 
-                if (sizeof($array) < 2 or sizeof($array) > 4)
+                if (sizeof($array) < 2)
                     throw new Exception("Error occured 2.");
                 $classname = reset($array);
 
@@ -310,6 +310,128 @@ class ParseFile
         } else
             throw new Exception("Error occured 1.");
         return $result;
+    }
+}
+
+// ------------- BONUS --------------
+
+final class Drood extends AHero implements IDPS, ISupport
+{
+    private $_dmg;
+    private $_heal;
+    const MAX_HP = 180;
+    const BASIC_DMG = 20;
+    const BASIC_HEAL = 22;
+
+    function __construct($string)
+    {
+        parent::__construct($string, self::MAX_HP);
+        $this->_dmg = self::BASIC_DMG;
+        $this->_heal = self::BASIC_HEAL;
+    }
+
+    public function hitHero($hero)
+    {
+        if ($hero->getHp() === 0)
+            return false;
+        else if ($this->_dmg === 0)
+            return false;
+        else if (($hero->getHp() - $this->_dmg) < 0) {
+            $hero->setHp(0);
+            return true;
+        } else {
+            $hero->setHp($hero->getHp() - $this->_dmg);
+            return true;
+        }
+    }
+
+    public function setDMG(int $value)
+    {
+        if (is_numeric($value) and !($value < self::BASIC_DMG))
+            $this->_dmg = $value;
+        return $this;
+    }
+
+    public function getDMG()
+    {
+        return intval($this->_dmg);
+    }
+
+    public function healHero($hero)
+    {
+        if ($hero->getHp() === $hero::MAX_HP)
+            return false;
+        else if ($this->_heal === 0)
+            return false;
+        else if (($hero->getHp() + $this->_heal) > $hero::MAX_HP) {
+            $hero->setHp($hero->getHp() + ($hero::MAX_HP - $hero->getHp()));
+            return true;
+        } else {
+            $hero->setHp($hero->getHp() + $this->_heal);
+            return true;
+        }
+    }
+
+    public function setHeal(int $value)
+    {
+        if (is_numeric($value) and !($value < self::BASIC_HEAL))
+            $this->_heal = $value;
+        return $this;
+    }
+
+    public function getHeal()
+    {
+        return intval($this->_heal);
+    }
+
+    public function whoAmI()
+    {
+        echo "I'm a drood and I can transform!\n";
+    }
+}
+
+final class Viking extends AHero implements IDPS
+{
+    private $_dmg;
+    const MAX_HP = 80;
+    const BASIC_DMG = 50;
+
+    function __construct($string)
+    {
+        parent::__construct("Bernard le Viking", self::MAX_HP);
+        $this->_dmg = self::BASIC_DMG;
+    }
+
+    public function hitHero($hero)
+    {
+        if ($hero->getHp() === 0)
+            return false;
+        else if ($this->_dmg === 0)
+            return false;
+        else if (($hero->getHp() - $this->_dmg) < 0) {
+            $hero->setHp(0);
+            return true;
+        } else {
+            $hero->setHp($hero->getHp() - $this->_dmg);
+            return true;
+        }
+    }
+
+    public function setDMG(int $value)
+    {
+        if (is_numeric($value) and !($value < self::BASIC_DMG))
+            $this->_dmg = $value;
+        return $this;
+    }
+
+    public function getDMG()
+    {
+        return intval($this->_dmg);
+    }
+
+    public function whoAmI()
+    {
+        echo "I’m Bernard le Viking and I SMASH!\n";
     }
 }
 
