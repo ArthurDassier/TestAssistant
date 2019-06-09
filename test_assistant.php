@@ -101,7 +101,7 @@ final class Warrior extends AHero implements IDPS
         }
     }
 
-    public function setDMG(int $hero)
+    public function setDMG(int $value)
     {
         if (is_numeric($value) and !($value < self::BASIC_DMG))
             $this->_dmg = $value;
@@ -199,7 +199,7 @@ final class Receptarier extends AHero implements IDPS, ISupport
         }
     }
 
-    public function setDMG(int $hero)
+    public function setDMG(int $value)
     {
         if (is_numeric($value) and !($value < self::BASIC_DMG))
             $this->_dmg = $value;
@@ -272,10 +272,44 @@ class ParseFile
 
     public function getHeroesFromFile($path)
     {
-        $content = file_get_contents($path);
+        $handle = @fopen($path, "r");
+        $result = array();
 
-        if ($content === FALSE)
+        if ($handle) {
+            while (($buffer = fgets($handle)) !== false) {
+                $array = explode(" ", $buffer);
+
+                if (sizeof($array) < 2 or sizeof($array) > 4)
+                    throw new Exception("Error occured 2.");
+                $classname = reset($array);
+
+                try {
+                    $obj = new $classname($array[1]);
+                } catch (Exception $e) {
+                    throw new Exception("Error occured 3.");
+                }
+                for ($i = 2; $i < sizeof($array); $i++) {
+                    try {
+                        $d = explode(":", $array[$i]);
+
+                        if ($d[0] === "d")
+                            $obj->setDMG(intval($d[1]));
+                        else if ($d[0] === "h")
+                            $obj->setHeal(intval($d[1]));
+                        else
+                            throw new Exception("Error occured 4.");
+                    } catch (Exception $e) {
+                        throw new Exception("Error occured 4.");
+                    }
+                }
+                array_push($result, $obj);
+            }
+            if (!feof($handle))
+                throw new Exception("Error occured 1.");
+            fclose($handle);
+        } else
             throw new Exception("Error occured 1.");
+        return $result;
     }
 }
 
